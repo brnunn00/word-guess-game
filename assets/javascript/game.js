@@ -1,5 +1,5 @@
 
-
+//Decare variables
 var guessesRemaining = 5;
 var lettersRemaining = 0;
 var gameStarted = false;
@@ -11,12 +11,14 @@ var validPicked = [];
 var answer = [];
 var answerKey = [];
 var remaniningArr = [];
-
-
-
 var letterPicked = '';
+var wordChoice;
 
+var word;
+//you're cheating if you look at this!
+var wordBank= ["Hot Dogs", "Popcorn", "Nachos", "Beer", "wine", "garlic fries", "a foul ball", "fun for the whole family"];
 
+//core code block, starts new game or processes choice on each valid keystroke
 document.onkeyup = function () {
   letterPicked = event.key;
   letterPicked = letterPicked.toLowerCase();
@@ -37,11 +39,12 @@ document.onkeyup = function () {
   
   }
 }
+
+//process key, determine if choice exists in array, reduce remaining letter count if so. Otherwise, reduce guess count.
+//check for game over condition at the end. 
 function processChoice(key, answer, valid) {
   if (valid.indexOf(key) > -1) {
-
     validPicked.push(key);
-    // lettersRemaining--;
     lettersPicked.push(key);
     lettersRemaining = (answerKey.length - validPicked.length) 
     rebuildBoard(validPicked);
@@ -57,15 +60,16 @@ function processChoice(key, answer, valid) {
 
 
 function getComputerChoice() {
-  //Don't look at this, it's cheating!
-var wordBank= ["Hot Dogs", "Popcorn", "Nachos", "Beer", "wine", "garlic fries", "a foul ball"];
+ 
   
 var randomSelectedNumber = Math.random() * wordBank.length;
   var randomIndex = Math.floor(randomSelectedNumber);
-  var word = wordBank[randomIndex];
+  //ensure previous word is not new word
+  
+   word = wordBank[randomIndex];
+ wordChoice =word;
   word = word.toLowerCase();
-  // var wordArray = word.split(" ");
-  // return wordArray;
+  
   return word;
 }
 
@@ -83,10 +87,10 @@ function buildBoard(compWord) {
       strB += "&nbsp";
     } else {
       strB += "_ ";
-      console.log(larr.indexOf(curLetter.toString() === -1));
+   
       if (!larr.includes(curLetter)) {
         larr.push(curLetter.toString());
-        console.log(larr);
+       
       }
     }
     fullArr.push(curLetter);
@@ -113,26 +117,31 @@ function rebuildBoard(correctLetters) {
 
   }
   document.getElementById("wordToGuess").textContent = boardStr;
-  // document.getElementById("lettersRemaining").textContent = lettersRemaining;
-
-
-}
+ }
 
 function checkForGameOver(guesses, remaining) {
   if (guesses == 0) {
     alert("Game Over Man");
     document.getElementById("prompt").innerText = "GAME OVER! Press any key to load a new word";
     gameStarted = false;
-    return true;
+    
   } else if (remaining === 0){
-    alert("You Win!");
+   
     document.getElementById("prompt").innerText = "Good Job! Press any key to load a new word";
     gameStarted = false;
-    return true;
+    
+  }
+  if (gameStarted == false){
+    spliceWordFromBank();
   }
   //put in check for letters remaining here. 
 }
-
+function spliceWordFromBank(){
+var ix = wordBank.indexOf(wordChoice);
+console.log(wordBank,wordChoice, ix);
+wordBank.splice(ix,1);
+console.log(wordBank);
+}
 function newGame(){
   gameStarted = true;
   guessesRemaining = 5;
@@ -141,6 +150,7 @@ function newGame(){
   document.getElementById("lettersPicked").textContent = "";
   document.getElementById("guessesRemaining").textContent = guessesRemaining;
    wordToGuess = getComputerChoice();
+
   letterObj = buildBoard(wordToGuess, answer);
   x.innerHTML = letterObj.board;
   answerKey = letterObj.validLetters;
