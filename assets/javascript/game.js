@@ -13,16 +13,20 @@ var answerKey = [];
 var remaniningArr = [];
 var letterPicked = '';
 var wordChoice;
+var gamesWon = 0;
+var gamesLost = 0;
+var gameRunning =false;
 
 var word;
 //you're cheating if you look at this!
 var wordBank= ["Hot Dogs", "Popcorn", "Nachos", "Beer", "wine", "garlic fries", "a foul ball", "fun for the whole family"];
+// var wordBank= ["aa", "bb"];
 
 //core code block, starts new game or processes choice on each valid keystroke
 document.onkeyup = function () {
   letterPicked = event.key;
   letterPicked = letterPicked.toLowerCase();
-  if (gameStarted) {
+  if (gameStarted && gameRunning) {
     var pattern = /^[a-z]$/i;
 
     if (pattern.test(letterPicked)) {
@@ -96,6 +100,27 @@ function buildBoard(compWord) {
     fullArr.push(curLetter);
 
   }
+if (gameRunning == false){
+  var h5 = document.createElement("h5");
+  h5.setAttribute("id", "gamesWon");
+  h5.textContent= "Games Won: 0";
+  var winCounter = document.getElementById("gamesWonCont");
+  winCounter.appendChild(h5);
+
+
+  var h5Lost = document.createElement("h5");
+  h5Lost.setAttribute("id", "gamesLost");
+  h5Lost.textContent= "Games Lost: 0";
+var lossCont = document.getElementById("gamesLostCont");
+lossCont.appendChild(h5Lost);
+
+
+gameRunning = true;
+
+// var lossCounter  = document.getElementById("gamesWon");
+// lossCounter.appendChild(node);
+}
+
   var obj = {};
   obj.board = strB;
   obj.validLetters = larr;
@@ -120,35 +145,58 @@ function rebuildBoard(correctLetters) {
  }
 
 function checkForGameOver(guesses, remaining) {
+var resultStr = '';
+  if (gameStarted == false){
+    newGame();
+    
+  }
   if (guesses == 0) {
-    alert("Game Over Man");
-    document.getElementById("prompt").innerText = "GAME OVER! Press any key to load a new word";
-    gameStarted = false;
+   
+        gameStarted = false;
+    gamesLost++;
+    resultStr += "Dang, all out of guesses :(";
+    document.getElementById("gamesLost").innerText = "Games Lost: " + gamesLost;
     
   } else if (remaining === 0){
    
-    document.getElementById("prompt").innerText = "Good Job! Press any key to load a new word";
-    gameStarted = false;
     
+    gameStarted = false;
+    gamesWon++;
+    resultStr += "You got it!";
+    playAudio()
+    document.getElementById("gamesWon").innerText ="Games Won: " + gamesWon;
   }
-  if (gameStarted == false){
+  
+  
+    if (gameStarted == false){
     spliceWordFromBank();
   }
+  if (gameStarted == false && wordBank.length ==0){
+    
+    endGame();
+  } else if (gameStarted == false){
+    resultStr += " Press any key to begin a new word.";
+    document.getElementById("prompt").textContent = resultStr;
+  }
+ 
   //put in check for letters remaining here. 
 }
 function spliceWordFromBank(){
+  if (wordBank.length >0){
 var ix = wordBank.indexOf(wordChoice);
-console.log(wordBank,wordChoice, ix);
 wordBank.splice(ix,1);
-console.log(wordBank);
+
+  } 
 }
 function newGame(){
   gameStarted = true;
+  // gameRunning = true;
   guessesRemaining = 5;
   var x = document.getElementById("wordToGuess");
   document.getElementById("prompt").textContent = "Hint: Things you can get at a baseball game";
-  document.getElementById("lettersPicked").textContent = "";
+  document.getElementById("lettersPicked").textContent = "Incorrect Letters Picked: ";
   document.getElementById("guessesRemaining").textContent = guessesRemaining;
+ 
    wordToGuess = getComputerChoice();
 
   letterObj = buildBoard(wordToGuess, answer);
@@ -160,4 +208,29 @@ function newGame(){
   // document.getElementById("lettersRemaining").textContent = lettersRemaining;
   lettersPicked = [];
   validPicked = [];
+}
+
+function endGame(){
+  var eit = document.createElement("h2");
+  eit.setAttribute("id", "gamesLost");
+  eit.textContent= "GAME OVER! Thanks for playing! Reload the page to begin the thrill ride anew!";
+var gOver = document.getElementById("gameOverMan");
+gOver.appendChild(eit);
+
+  gameRunning = false;
+}
+
+function playAudio(src) {
+  this.sound = document.createElement("audio");
+  this.sound.src = src;
+  this.sound.setAttribute("preload", "auto");
+  this.sound.setAttribute("controls", "none");
+  this.sound.style.display = "none";
+  document.body.appendChild(this.sound);
+  this.play = function(){
+    this.sound.play();
+  }
+  this.stop = function(){
+    this.sound.pause();
+  }
 }

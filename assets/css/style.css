@@ -1,0 +1,20 @@
+.prompt{
+    height: 75px;
+}
+
+body{
+    background-image: url("https://image.shutterstock.com/image-photo/old-vintage-baseball-background-focus-260nw-228917713.jpg");
+background-size: cover;
+opacity: .9;
+}
+
+.custo{
+background-color: grey;
+}
+
+.letterBox{
+    border: 2px;
+    border-style: solid;
+    border-color: orange;
+    margin:0 0 15px 0;
+}

@@ -1,21 +1,57 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="assets/javascript/game.js"></script>
 </head>
+
 <body>
-    <h2 id="prompt"> Press any Key to Get Started</h2>
+    <navbar class="nav-brand navbar custo">
+        <h4>Time to play hangman!</h4>
+    </navbar>
 
-    <h4 id="wordToGuess"> Let's Play!  </h4>
-    <h4>Guesses Remaining: <span id="guessesRemaining">5</span></h4>
-    <!-- <h4>Letters Remaining: <span id="lettersRemaining">_</span></h4> -->
+    <div class="jumbotron justify-content-center">
+        <div class="container justify-content-center">
+        <div class="row justify-content-center ">
+                <div class="col-2">&nbsp;</div>
+            <div class="col-10 justify-content-center prompt">
+                <h2 id="prompt"> Press any Key to Get Started</h2>
+            </div>
+            </div>
+            <div class="row">
+                <div class="col-2">&nbsp;</div>
+                <div class="col-8">
+                    <h4 id="wordToGuess"> Let's Play! </h4>
+                    <h4>Guesses Remaining: <span id="guessesRemaining">5</span></h4>
+                    <!-- <h4>Letters Remaining: <span id="lettersRemaining">_</span></h4> -->
 
-    <br>
-    <h4 id="lettersPicked"></h4>
+                    <hr>
+                    <br>
+                    <div class="letterBox">
+                    <h4 id="lettersPicked">Incorrect Letters Picked: </h4>
+                    </div>
+                    <br>
+                    <div id="gamesWonCont">
+
+                    </div>
+                    <div id="gamesLostCont">
+
+                    </div>
+
+                    <div id="gameOverMan">
+
+                    </div>
+                </div>
+            </div>
+            </div>
+
 </body>
+
 </html>
